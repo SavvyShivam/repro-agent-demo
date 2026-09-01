@@ -9,7 +9,8 @@ WIDGETS = [{"id": i, "name": f"widget-{i}"} for i in range(1, 6)]
 def list_widgets():
     limit = request.args.get("limit", type=int)
     items = WIDGETS
-    if limit:  # BUG: limit=0 is falsy, so the cap is ignored and all rows return
+    # Apply limit when it is explicitly provided (including zero)
+    if limit is not None:
         items = WIDGETS[:limit]
     return jsonify(items)
 
